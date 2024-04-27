@@ -1,0 +1,96 @@
+#define enA 9
+#define in1 4
+#define in2 5
+#define enB 10
+#define in3 6
+#define in4 7
+int motorSpeedA=0, motorSpeedB=0;
+void setup()
+{
+pinMode(enA, OUTPUT);
+pinMode(enB, OUTPUT);
+pinMode(in1, OUTPUT);
+pinMode(in2, OUTPUT);
+pinMode(in3, OUTPUT);
+pinMode(in4, OUTPUT);
+}
+void loop()
+{
+int X= analogRead(A0); //read joystick x-axis
+int Y= analogRead(A1);//read joystick y-axis
+//Y axis control mapping(forward and backward)
+if(Y<470)
+{
+//set Motor A backward
+digitalWrite(in1,HIGH);
+digitalWrite(in2,LOW);
+motorSpeedA=map(Y,470,0,0,255);
+//set Motor B backward
+digitalWrite(in3,HIGH);
+digitalWrite(in4,LOW);
+motorSpeedB=map(Y,470,0,0,255);
+}
+else if(Y>550)
+{
+//set Motor A forward
+digitalWrite(in1,LOW);
+digitalWrite(in2,HIGH);
+motorSpeedA=map(Y,550,1023,0,255);
+//set Motor B forward
+digitalWrite(in3,LOW);
+digitalWrite(in4,HIGH);
+motorSpeedB=map(Y,550,1023,0,255);
+}
+//if joystick stays in the middleand the motors are not moving
+else
+{
+motorSpeedA=0;
+motorSpeedB=0;
+}
+//X axis control mapping(right and left)
+if(X<470)
+{
+int xmapped=map(X,470,0,0,255);
+motorSpeedA=motorSpeedA-xmapped;//decreases motor A speed 
+motorSpeedB=motorSpeedB+xmapped;//increases motor B speed
+//confine the motor speed between 0 to 255
+     if(motorSpeedA<0)
+	 {
+	   motorSpeedA=0;
+	 }
+	 if(motorSpeedB>255)
+	 {
+	   motorSpeedB=255);
+	 }
+}
+if(X>550)
+{
+int xmapped=map(X,550,1023,0,255);
+motorSpeedA=motorSpeedA+xmapped;//increases motor A speed 
+motorSpeedB=motorSpeedB-xmapped;//decreases motor B speed
+//confine the motor speed between 0 to 255
+     if(motorSpeedA>255)
+	 {
+	   motorSpeedA=255;
+	 }
+	 if(motorSpeedB<0)
+	 {
+	   motorSpeedB=0;
+	 }
+}
+//the motors stop after the reading in the codes goes below 70 and starts buzzing to prevent this we restrict readings from 70 to 255
+if(motorSpeedA<70)
+{
+ motorSpeedA=0;
+}
+if(motorSpeedB<70)
+{
+ motorSpeedB=0;
+}
+analogWrite(enA, motorSpeedA);
+analogWrite(enB, motorSpeedB);
+}
+
+
+
+
