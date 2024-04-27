@@ -1,0 +1,24 @@
+
+int c1 = 0;  
+int c2,c3;
+#define ENB 2
+#define IN1 3
+#define IN2 4
+
+void setup()  {
+  pinMode(ENB, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+}
+void loop()
+{           
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+   //c2 = analogRead(A3);
+   //c2=c2*0.2492668622;
+   c3 = analogRead(A4);
+   c3=c3*0.2492668622;
+  analogWrite(ENB,c3); 
+  //analogWrite(ENB,c3);
+    
+}
